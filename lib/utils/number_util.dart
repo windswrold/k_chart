@@ -30,11 +30,11 @@ class NumberUtil {
     int result = max(getDecimalLength(a), getDecimalLength(b));
     result = max(result, getDecimalLength(c));
     result = max(result, getDecimalLength(d));
-    if (value > double.maxFinite) {
-     value  = double.maxFinite;
+    if (result > double.maxFinite) {
+     result  = double.maxFinite;
 }
-      if (value < double.minPositive) {
-     value  = double.minPositive;
+      if (result < double.minPositive) {
+     result  = double.minPositive;
 }
  
     return result;

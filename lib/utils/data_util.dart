@@ -226,7 +226,7 @@ class DataUtil {
 
   static void calcCCI(List<KLineEntity> dataList) {
     final size = dataList.length;
-    final count = 14;
+    const count = 14;
     for (int i = 0; i < size; i++) {
       final kline = dataList[i];
       final tp = (kline.high + kline.low + kline.close) / 3;

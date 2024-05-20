@@ -73,40 +73,41 @@ class ChartPainter extends BaseChartPainter {
     this.showNowPrice = true,
     this.fixedLength = 2,
     this.maDayList = const [5, 10, 20],
-  }) : super(chartStyle,
-            datas: datas,
-            scaleX: scaleX,
-            scrollX: scrollX,
-            isLongPress: isLongPass,
-            isOnTap: isOnTap,
-            isTapShowInfoDialog: isTapShowInfoDialog,
-            selectX: selectX,
-            mainState: mainState,
-            volHidden: volHidden,
-            secondaryState: secondaryState,
-            xFrontPadding: xFrontPadding,
-            isLine: isLine) {
+  }) : super(
+          chartStyle,
+          datas: datas,
+          scaleX: scaleX,
+          scrollX: scrollX,
+          isLongPress: isLongPass,
+          isOnTap: isOnTap,
+          isTapShowInfoDialog: isTapShowInfoDialog,
+          selectX: selectX,
+          mainState: mainState,
+          volHidden: volHidden,
+          secondaryState: secondaryState,
+          xFrontPadding: xFrontPadding,
+          isLine: isLine,
+        ) {
     selectPointPaint = Paint()
       ..isAntiAlias = true
       ..strokeWidth = 0.5
-      ..color = this.chartColors.selectFillColor;
+      ..color = chartColors.selectFillColor;
     selectorBorderPaint = Paint()
       ..isAntiAlias = true
       ..strokeWidth = 0.5
       ..style = PaintingStyle.stroke
-      ..color = this.chartColors.selectBorderColor;
+      ..color = chartColors.selectBorderColor;
     nowPricePaint = Paint()
-      ..strokeWidth = this.chartStyle.nowPriceLineWidth
+      ..strokeWidth = chartStyle.nowPriceLineWidth
       ..isAntiAlias = true;
   }
 
   @override
   void initChartRenderer() {
-    // if (datas != null && datas!.isNotEmpty) {
-    //   var t = datas![0];
-    //   fixedLength =
-    //       NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
-    // }
+    if (datas != null && datas!.isNotEmpty) {
+      var t = datas![0];
+      fixedLength = NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
+    }
     mMainRenderer = MainRenderer(
       mMainRect,
       mMainMaxValue,
@@ -115,26 +116,34 @@ class ChartPainter extends BaseChartPainter {
       mainState,
       isLine,
       fixedLength,
-      this.chartStyle,
-      this.chartColors,
-      this.scaleX,
+      chartStyle,
+      chartColors,
+      scaleX,
       verticalTextAlignment,
       maDayList,
     );
     if (mVolRect != null) {
-      mVolRenderer = VolRenderer(mVolRect!, mVolMaxValue, mVolMinValue,
-          mChildPadding, fixedLength, this.chartStyle, this.chartColors);
+      mVolRenderer = VolRenderer(
+        mVolRect!,
+        mVolMaxValue,
+        mVolMinValue,
+        mChildPadding,
+        fixedLength,
+        chartStyle,
+        chartColors,
+      );
     }
     if (mSecondaryRect != null) {
       mSecondaryRenderer = SecondaryRenderer(
-          mSecondaryRect!,
-          mSecondaryMaxValue,
-          mSecondaryMinValue,
-          mChildPadding,
-          secondaryState,
-          fixedLength,
-          chartStyle,
-          chartColors);
+        mSecondaryRect!,
+        mSecondaryMaxValue,
+        mSecondaryMinValue,
+        mChildPadding,
+        secondaryState,
+        fixedLength,
+        chartStyle,
+        chartColors,
+      );
     }
   }
 
@@ -146,28 +155,21 @@ class ChartPainter extends BaseChartPainter {
       end: Alignment.topCenter,
       colors: chartColors.bgColor,
     );
-    Rect mainRect =
-        Rect.fromLTRB(0, 0, mMainRect.width, mMainRect.height + mTopPadding);
-    canvas.drawRect(
-        mainRect, mBgPaint..shader = mBgGradient.createShader(mainRect));
+    Rect mainRect = Rect.fromLTRB(0, 0, mMainRect.width, mMainRect.height + mTopPadding);
+    canvas.drawRect(mainRect, mBgPaint..shader = mBgGradient.createShader(mainRect));
 
     if (mVolRect != null) {
-      Rect volRect = Rect.fromLTRB(
-          0, mVolRect!.top - mChildPadding, mVolRect!.width, mVolRect!.bottom);
-      canvas.drawRect(
-          volRect, mBgPaint..shader = mBgGradient.createShader(volRect));
+      Rect volRect = Rect.fromLTRB(0, mVolRect!.top - mChildPadding, mVolRect!.width, mVolRect!.bottom);
+      canvas.drawRect(volRect, mBgPaint..shader = mBgGradient.createShader(volRect));
     }
 
     if (mSecondaryRect != null) {
-      Rect secondaryRect = Rect.fromLTRB(0, mSecondaryRect!.top - mChildPadding,
-          mSecondaryRect!.width, mSecondaryRect!.bottom);
-      canvas.drawRect(secondaryRect,
-          mBgPaint..shader = mBgGradient.createShader(secondaryRect));
+      Rect secondaryRect =
+          Rect.fromLTRB(0, mSecondaryRect!.top - mChildPadding, mSecondaryRect!.width, mSecondaryRect!.bottom);
+      canvas.drawRect(secondaryRect, mBgPaint..shader = mBgGradient.createShader(secondaryRect));
     }
-    Rect dateRect =
-        Rect.fromLTRB(0, size.height - mBottomPadding, size.width, size.height);
-    canvas.drawRect(
-        dateRect, mBgPaint..shader = mBgGradient.createShader(dateRect));
+    Rect dateRect = Rect.fromLTRB(0, size.height - mBottomPadding, size.width, size.height);
+    canvas.drawRect(dateRect, mBgPaint..shader = mBgGradient.createShader(dateRect));
   }
 
   @override
@@ -193,12 +195,10 @@ class ChartPainter extends BaseChartPainter {
 
       mMainRenderer.drawChart(lastPoint, curPoint, lastX, curX, size, canvas);
       mVolRenderer?.drawChart(lastPoint, curPoint, lastX, curX, size, canvas);
-      mSecondaryRenderer?.drawChart(
-          lastPoint, curPoint, lastX, curX, size, canvas);
+      mSecondaryRenderer?.drawChart(lastPoint, curPoint, lastX, curX, size, canvas);
     }
 
-    if ((isLongPress == true || (isTapShowInfoDialog && isOnTap)) &&
-        isTrendLine == false) {
+    if ((isLongPress == true || (isTapShowInfoDialog && isOnTap)) && isTrendLine == false) {
       drawCrossLine(canvas, size);
     }
     if (isTrendLine == true) drawTrendLines(canvas, size);
@@ -207,7 +207,7 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawVerticalText(canvas) {
-    var textStyle = getTextStyle(this.chartColors.defaultTextColor);
+    var textStyle = getTextStyle(chartColors.defaultTextColor);
     if (!hideGrid) {
       mMainRenderer.drawVerticalText(canvas, textStyle, mGridRows);
     }
@@ -258,7 +258,8 @@ class ChartPainter extends BaseChartPainter {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
 
-    TextPainter tp = getTextPainter(point.close, chartColors.crossTextColor);
+    // 选中横线框
+    TextPainter tp = getTextPainter(point.close.toStringAsFixed(4), chartColors.crossTextColor);
     double textHeight = tp.height;
     double textWidth = tp.width;
 
@@ -271,7 +272,7 @@ class ChartPainter extends BaseChartPainter {
     if (translateXtoX(getX(index)) < mWidth / 2) {
       isLeft = false;
       x = 1;
-      Path path = new Path();
+      Path path = Path();
       path.moveTo(x, y - r);
       path.lineTo(x, y + r);
       path.lineTo(textWidth + 2 * w1, y + r);
@@ -284,7 +285,7 @@ class ChartPainter extends BaseChartPainter {
     } else {
       isLeft = true;
       x = mWidth - textWidth - 1 - 2 * w1 - w2;
-      Path path = new Path();
+      Path path = Path();
       path.moveTo(x, y);
       path.lineTo(x + w2, y + r);
       path.lineTo(mWidth - 2, y + r);
@@ -296,8 +297,7 @@ class ChartPainter extends BaseChartPainter {
       tp.paint(canvas, Offset(x + w1 + w2, y - textHeight / 2));
     }
 
-    TextPainter dateTp =
-        getTextPainter(getDate(point.time), chartColors.crossTextColor);
+    TextPainter dateTp = getTextPainter(getDate(point.time), chartColors.crossTextColor);
     textWidth = dateTp.width;
     r = textHeight / 2;
     x = translateXtoX(getX(index));
@@ -310,13 +310,9 @@ class ChartPainter extends BaseChartPainter {
     }
     double baseLine = textHeight / 2;
     canvas.drawRect(
-        Rect.fromLTRB(x - textWidth / 2 - w1, y, x + textWidth / 2 + w1,
-            y + baseLine + r),
-        selectPointPaint);
+        Rect.fromLTRB(x - textWidth / 2 - w1, y, x + textWidth / 2 + w1, y + baseLine + r), selectPointPaint);
     canvas.drawRect(
-        Rect.fromLTRB(x - textWidth / 2 - w1, y, x + textWidth / 2 + w1,
-            y + baseLine + r),
-        selectorBorderPaint);
+        Rect.fromLTRB(x - textWidth / 2 - w1, y, x + textWidth / 2 + w1, y + baseLine + r), selectorBorderPaint);
 
     dateTp.paint(canvas, Offset(x - textWidth / 2, y));
     //长按显示这条数据详情
@@ -435,7 +431,7 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawNowPrice(Canvas canvas) {
-    if (!this.showNowPrice) {
+    if (!showNowPrice) {
       return;
     }
 
@@ -455,25 +451,17 @@ class ChartPainter extends BaseChartPainter {
       y = getMainY(mMainHighMaxValue);
     }
 
-    nowPricePaint
-      ..color = value >= datas!.last.open
-          ? this.chartColors.nowPriceUpColor
-          : this.chartColors.nowPriceDnColor;
+    nowPricePaint.color = value >= datas!.last.open ? chartColors.nowPriceUpColor : chartColors.nowPriceDnColor;
     //先画横线
     double startX = 0;
     final max = -mTranslateX + mWidth / scaleX;
-    final space =
-        this.chartStyle.nowPriceLineSpan + this.chartStyle.nowPriceLineLength;
+    final space = chartStyle.nowPriceLineSpan + chartStyle.nowPriceLineLength;
     while (startX < max) {
-      canvas.drawLine(
-          Offset(startX, y),
-          Offset(startX + this.chartStyle.nowPriceLineLength, y),
-          nowPricePaint);
+      canvas.drawLine(Offset(startX, y), Offset(startX + chartStyle.nowPriceLineLength, y), nowPricePaint);
       startX += space;
     }
     //再画背景和文本
-    TextPainter tp = getTextPainter(
-        value.toStringAsFixed(fixedLength), this.chartColors.nowPriceTextColor);
+    TextPainter tp = getTextPainter(value.toStringAsFixed(fixedLength), chartColors.nowPriceTextColor);
 
     double offsetX;
     switch (verticalTextAlignment) {
@@ -486,9 +474,7 @@ class ChartPainter extends BaseChartPainter {
     }
 
     double top = y - tp.height / 2;
-    canvas.drawRect(
-        Rect.fromLTRB(offsetX, top, offsetX + tp.width, top + tp.height),
-        nowPricePaint);
+    canvas.drawRect(Rect.fromLTRB(offsetX, top, offsetX + tp.width, top + tp.height), nowPricePaint);
     tp.paint(canvas, Offset(offsetX, top));
   }
 
@@ -506,8 +492,7 @@ class ChartPainter extends BaseChartPainter {
     // getMainY(point.close);
 
     // k线图竖线
-    canvas.drawLine(Offset(x, mTopPadding),
-        Offset(x, size.height - mBottomPadding), paintY);
+    canvas.drawLine(Offset(x, mTopPadding), Offset(x, size.height - mBottomPadding), paintY);
     Paint paintX = Paint()
       ..color = Colors.orangeAccent
       ..strokeWidth = 1
@@ -517,21 +502,14 @@ class ChartPainter extends BaseChartPainter {
       ..strokeWidth = 1.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
-    canvas.drawLine(Offset(-mTranslateX, y),
-        Offset(-mTranslateX + mWidth / scaleX, y), paintX);
+    canvas.drawLine(Offset(-mTranslateX, y), Offset(-mTranslateX + mWidth / scaleX, y), paintX);
     if (scaleX >= 1) {
-      canvas.drawOval(
-          Rect.fromCenter(
-              center: Offset(x, y), height: 15.0 * scaleX, width: 15.0),
-          paint);
+      canvas.drawOval(Rect.fromCenter(center: Offset(x, y), height: 15.0 * scaleX, width: 15.0), paint);
     } else {
-      canvas.drawOval(
-          Rect.fromCenter(
-              center: Offset(x, y), height: 10.0, width: 10.0 / scaleX),
-          paint);
+      canvas.drawOval(Rect.fromCenter(center: Offset(x, y), height: 10.0, width: 10.0 / scaleX), paint);
     }
-    if (lines.length >= 1) {
-      lines.forEach((element) {
+    if (lines.isNotEmpty) {
+      for (var element in lines) {
         var y1 = -((element.p1.dy - 35) / element.scale) + element.maxHeight;
         var y2 = -((element.p2.dy - 35) / element.scale) + element.maxHeight;
         var a = (trendLineMax! - y1) * trendLineScale! + trendLineContentRec!;
@@ -540,62 +518,51 @@ class ChartPainter extends BaseChartPainter {
         var p2 = Offset(element.p2.dx, b);
         canvas.drawLine(
             p1,
-            element.p2 == Offset(-1, -1) ? Offset(x, y) : p2,
+            element.p2 == const Offset(-1, -1) ? Offset(x, y) : p2,
             Paint()
               ..color = Colors.yellow
               ..strokeWidth = 2);
-      });
+      }
     }
   }
 
   ///画交叉线
+  @override
   void drawCrossLine(Canvas canvas, Size size) {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
     Paint paintY = Paint()
-      ..color = this.chartColors.vCrossColor
-      ..strokeWidth = this.chartStyle.vCrossWidth
+      ..color = chartColors.vCrossColor
+      ..strokeWidth = chartStyle.vCrossWidth
       ..isAntiAlias = true;
     double x = getX(index);
     double y = getMainY(point.close);
     // k线图竖线
-    canvas.drawLine(Offset(x, mTopPadding),
-        Offset(x, size.height - mBottomPadding), paintY);
+    canvas.drawLine(Offset(x, mTopPadding), Offset(x, size.height - mBottomPadding), paintY);
 
     Paint paintX = Paint()
-      ..color = this.chartColors.hCrossColor
-      ..strokeWidth = this.chartStyle.hCrossWidth
+      ..color = chartColors.hCrossColor
+      ..strokeWidth = chartStyle.hCrossWidth
       ..isAntiAlias = true;
     // k线图横线
-    canvas.drawLine(Offset(-mTranslateX, y),
-        Offset(-mTranslateX + mWidth / scaleX, y), paintX);
+    canvas.drawLine(Offset(-mTranslateX, y), Offset(-mTranslateX + mWidth / scaleX, y), paintX);
     if (scaleX >= 1) {
-      canvas.drawOval(
-          Rect.fromCenter(
-              center: Offset(x, y), height: 2.0 * scaleX, width: 2.0),
-          paintX);
+      canvas.drawOval(Rect.fromCenter(center: Offset(x, y), height: 2.0 * scaleX, width: 2.0), paintX);
     } else {
-      canvas.drawOval(
-          Rect.fromCenter(
-              center: Offset(x, y), height: 2.0, width: 2.0 / scaleX),
-          paintX);
+      canvas.drawOval(Rect.fromCenter(center: Offset(x, y), height: 2.0, width: 2.0 / scaleX), paintX);
     }
   }
 
   TextPainter getTextPainter(text, color) {
-    if (color == null) {
-      color = this.chartColors.defaultTextColor;
-    }
+    color ??= chartColors.defaultTextColor;
     TextSpan span = TextSpan(text: "$text", style: getTextStyle(color));
     TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);
     tp.layout();
     return tp;
   }
 
-  String getDate(int? date) => dateFormat(
-      DateTime.fromMillisecondsSinceEpoch(
-          date ?? DateTime.now().millisecondsSinceEpoch),
-      mFormats);
+  String getDate(int? date) =>
+      dateFormat(DateTime.fromMillisecondsSinceEpoch(date ?? DateTime.now().millisecondsSinceEpoch), mFormats);
 
   double getMainY(double y) => mMainRenderer.getY(y);
 

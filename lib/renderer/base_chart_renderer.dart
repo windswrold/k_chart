@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/base_util.dart';
 export '../chart_style.dart';
 
 abstract class BaseChartRenderer<T> {
@@ -17,7 +18,7 @@ abstract class BaseChartRenderer<T> {
     ..isAntiAlias = true
     ..filterQuality = FilterQuality.high
     ..strokeWidth = 0.5
-    ..color = Color(0xff4c5c74);
+    ..color = const Color(0xff4c5c74);
 
   BaseChartRenderer({
     required this.chartRect,
@@ -42,7 +43,13 @@ abstract class BaseChartRenderer<T> {
     if (n == null || n.isNaN) {
       return "0.00";
     } else {
-      return n.toStringAsFixed(fixedLength);
+      if (n > 1) {
+        return BaseUtil.getNumByValueDouble(n, 4);
+      }
+      return BaseUtil.getNumByValueDouble(n, 8);
+      // debugPrint('🐞 n $n');
+      // return BaseUtil.formatNumber(n);
+      // return n.toStringAsFixed(fixedLength);
     }
   }
 
@@ -52,11 +59,9 @@ abstract class BaseChartRenderer<T> {
 
   void drawVerticalText(canvas, textStyle, int gridRows);
 
-  void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size,
-      Canvas canvas);
+  void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size, Canvas canvas);
 
-  void drawLine(double? lastPrice, double? curPrice, Canvas canvas,
-      double lastX, double curX, Color color) {
+  void drawLine(double? lastPrice, double? curPrice, Canvas canvas, double lastX, double curX, Color color) {
     if (lastPrice == null || curPrice == null) {
       return;
     }
@@ -64,8 +69,7 @@ abstract class BaseChartRenderer<T> {
     double lastY = getY(lastPrice);
     double curY = getY(curPrice);
     //print("lastX-----==" + lastX.toString() + "==lastY==" + lastY.toString() + "==curX==" + curX.toString() + "==curY==" + curY.toString());
-    canvas.drawLine(
-        Offset(lastX, lastY), Offset(curX, curY), chartPaint..color = color);
+    canvas.drawLine(Offset(lastX, lastY), Offset(curX, curY), chartPaint..color = color);
   }
 
   TextStyle getTextStyle(Color color) {

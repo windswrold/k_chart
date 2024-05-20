@@ -1,58 +1,54 @@
 import 'package:flutter/material.dart' show Color;
 
 class ChartColors {
-  List<Color> bgColor = [Color(0xff18191d), Color(0xff18191d)];
+  List<Color> bgColor = [const Color(0xffffffff), const Color(0xffffffff)];
 
-  Color kLineColor = Color(0xff4C86CD);
-  Color lineFillColor = Color(0x554C86CD);
-  Color lineFillInsideColor = Color(0x00000000);
-  Color ma5Color = Color(0xffC9B885);
-  Color ma10Color = Color(0xff6CB0A6);
-  Color ma30Color = Color(0xff9979C6);
-  Color upColor = Color(0xff4DAA90);
-  Color dnColor = Color(0xffC15466);
-  Color volColor = Color(0xff4729AE);
+  Color kLineColor = const Color(0xff4C86CD); // K线颜色（蓝色）
+  Color lineFillColor = const Color(0x554C86CD); // K线填充颜色（半透明蓝色）
+  Color lineFillInsideColor = const Color(0x00000000); // K线内填充颜色（透明）
 
-  Color macdColor = Color(0xff4729AE);
-  Color difColor = Color(0xffC9B885);
-  Color deaColor = Color(0xff6CB0A6);
+  Color ma5Color = const Color(0xffC9B885); // MA5线颜色（淡黄色）
+  Color ma10Color = const Color(0xff6CB0A6); // MA10线颜色（青绿色）
+  Color ma30Color = const Color(0xff9979C6); // MA30线颜色（紫色）
 
-  Color kColor = Color(0xffC9B885);
-  Color dColor = Color(0xff6CB0A6);
-  Color jColor = Color(0xff9979C6);
-  Color rsiColor = Color(0xffC9B885);
+  Color upColor = const Color(0xff5d9f80); // 上涨颜色（绿色）
+  Color dnColor = const Color(0xffea877b); // 下跌颜色（红色）
+  Color volColor = const Color(0xff4729AE); // 成交量颜色（深紫色）
 
-  Color defaultTextColor = Color(0xff60738E);
+  Color macdColor = const Color(0xff4729AE); // MACD线颜色（深紫色）
+  Color difColor = const Color(0xffC9B885); // DIF线颜色（淡黄色）
+  Color deaColor = const Color(0xff6CB0A6); // DEA线颜色（青绿色）
 
-  Color nowPriceUpColor = Color(0xff4DAA90);
-  Color nowPriceDnColor = Color(0xffC15466);
-  Color nowPriceTextColor = Color(0xffffffff);
+  Color kColor = const Color(0xffC9B885); // K线颜色（淡黄色）
+  Color dColor = const Color(0xff6CB0A6); // D线颜色（青绿色）
+  Color jColor = const Color(0xff9979C6); // J线颜色（紫色）
+  Color rsiColor = const Color(0xffC9B885); // RSI线颜色（淡黄色）
 
-  //深度颜色
-  Color depthBuyColor = Color(0xff60A893);
-  Color depthSellColor = Color(0xffC15866);
+  Color defaultTextColor = const Color(0xff60738E); // 默认文字颜色（灰蓝色）
 
-  //选中后显示值边框颜色
-  Color selectBorderColor = Color(0xff6C7A86);
+  Color nowPriceUpColor = const Color(0xff5d9f80); // 当前价格上涨颜色（绿色）
+  Color nowPriceDnColor = const Color(0xffea877b); // 当前价格下跌颜色（红色）
+  Color nowPriceTextColor = const Color(0xffffffff); // 当前价格文字颜色（白色）
 
-  //选中后显示值背景的填充颜色
-  Color selectFillColor = Color(0xff0D1722);
+  Color depthBuyColor = const Color(0xff60A893); // 深度买入颜色（浅绿色）
+  Color depthSellColor = const Color(0xffC15866); // 深度卖出颜色（红色）
 
-  //分割线颜色
-  Color gridColor = Color(0xff4c5c74);
+  Color selectBorderColor = const Color(0xffa2a2a2); // 选中后显示值边框颜色（灰蓝色）
+  Color selectFillColor = const Color(0xfff1f1f1); // 选中后显示值背景的填充颜色（深蓝色）
 
-  Color infoWindowNormalColor = Color(0xffffffff);
-  Color infoWindowTitleColor = Color(0xffffffff);
-  Color infoWindowUpColor = Color(0xff00ff00);
-  Color infoWindowDnColor = Color(0xffff0000);
+  Color gridColor = const Color(0xffefefef); // 分割线颜色（深蓝色）
 
-  Color hCrossColor = Color(0xffffffff);
-  Color vCrossColor = Color(0x1Effffff);
-  Color crossTextColor = Color(0xffffffff);
+  Color infoWindowNormalColor = const Color(0xff000000); // 信息窗口正常颜色（白色）
+  Color infoWindowTitleColor = const Color(0xff000000); // 信息窗口标题颜色（白色）
+  Color infoWindowUpColor = const Color(0xff5d9f80); // 信息窗口上涨颜色（绿色）
+  Color infoWindowDnColor = const Color(0xffea877b); // 信息窗口下跌颜色（红色）
 
-  //当前显示内最大和最小值的颜色
-  Color maxColor = Color(0xffffffff);
-  Color minColor = Color(0xffffffff);
+  Color hCrossColor = const Color(0xff000000); // 水平十字线颜色（白色）
+  Color vCrossColor = const Color(0x1e676767); // 垂直十字线颜色（半透明白色）
+  Color crossTextColor = const Color(0xff000000); // 十字线文字颜色（白色）
+
+  Color maxColor = const Color(0xffa2a2a2); // 当前显示内最大值颜色（白色）
+  Color minColor = const Color(0xffa2a2a2); // 当前显示内最小值颜色（白色）
 
   Color getMAColor(int index) {
     switch (index % 3) {

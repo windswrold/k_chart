@@ -18,8 +18,22 @@ class NumberUtil {
       n /= 1000;
       return "${n.toStringAsFixed(2)}K";
     } else {
-      return BaseUtil.getNumByValueDouble(n, 4);
+      return getNumByValueDouble(n, 4);
       // return n.toStringAsFixed(4);
+    }
+  }
+
+  static String getNumByValueDouble(dynamic num, [int position = 2]) {
+    try {
+      if (num is double) {
+        return NumUtil.getNumByValueDouble(num, position).toString();
+      } else if (num is String) {
+        return NumUtil.getNumByValueDouble(double.tryParse(num) ?? 0, position)
+            .toString();
+      }
+      return '0.00';
+    } catch (err) {
+      return '0.00';
     }
   }
 

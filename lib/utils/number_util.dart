@@ -1,7 +1,13 @@
-import 'dart:math';
+// import 'dart:math';
+
+import 'package:wallet/util/base_util.dart';
 
 class NumberUtil {
-  static String format(double n) {
+  static String format(dynamic n) {
+    if (n is String) {
+      n = double.tryParse(n) ?? 0;
+    }
+
     if (n >= 1000000000) {
       n /= 1000000000;
       return "${n.toStringAsFixed(2)}B";
@@ -12,7 +18,8 @@ class NumberUtil {
       n /= 1000;
       return "${n.toStringAsFixed(2)}K";
     } else {
-      return n.toStringAsFixed(4);
+      return BaseUtil.getNumByValueDouble(n, 4);
+      // return n.toStringAsFixed(4);
     }
   }
 
@@ -27,11 +34,18 @@ class NumberUtil {
   }
 
   static int getMaxDecimalLength(double a, double b, double c, double d) {
-    int result = max(getDecimalLength(a), getDecimalLength(b));
-    result = max(result, getDecimalLength(c));
-    result = max(result, getDecimalLength(d));
-    result = min(result, 20);
-    return result;
+    // int result = max(getDecimalLength(a), getDecimalLength(b));
+    // result = max(result, getDecimalLength(c));
+    // result = max(result, getDecimalLength(d));
+    // result = min(result, 8);
+    if (b > 1) {
+      return 4;
+    } else {
+      return 8;
+    }
+    // print('🐞 result $result');
+    // 锁定输出长度
+    // return 8;
   }
 
   static bool checkNotNullOrZero(double? a) {

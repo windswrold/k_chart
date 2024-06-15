@@ -11,8 +11,8 @@ class ChartColors {
   Color ma10Color = const Color(0xff6CB0A6); // MA10线颜色（青绿色）
   Color ma30Color = const Color(0xff9979C6); // MA30线颜色（紫色）
 
-  Color upColor = const Color(0xff5d9f80); // 上涨颜色（绿色）
-  Color dnColor = const Color(0xffea877b); // 下跌颜色（红色）
+  Color upColor = const Color(0xff15A479); // 上涨颜色（绿色）
+  Color dnColor = const Color(0xffEB5F54); // 下跌颜色（红色）
   Color volColor = const Color(0xff4729AE); // 成交量颜色（深紫色）
 
   Color macdColor = const Color(0xff4729AE); // MACD线颜色（深紫色）
@@ -26,12 +26,12 @@ class ChartColors {
 
   Color defaultTextColor = const Color(0xff60738E); // 默认文字颜色（灰蓝色）
 
-  Color nowPriceUpColor = const Color(0xff5d9f80); // 当前价格上涨颜色（绿色）
-  Color nowPriceDnColor = const Color(0xffea877b); // 当前价格下跌颜色（红色）
+  Color nowPriceUpColor = const Color(0xff15A479); // 当前价格上涨颜色（绿色）
+  Color nowPriceDnColor = const Color(0xffEB5F54); // 当前价格下跌颜色（红色）
   Color nowPriceTextColor = const Color(0xffffffff); // 当前价格文字颜色（白色）
 
-  Color depthBuyColor = const Color(0xff60A893); // 深度买入颜色（浅绿色）
-  Color depthSellColor = const Color(0xffC15866); // 深度卖出颜色（红色）
+  Color depthBuyColor = const Color(0xff15A479); // 深度买入颜色（浅绿色）
+  Color depthSellColor = const Color(0xffEB5F54); // 深度卖出颜色（红色）
 
   Color selectBorderColor = const Color(0xffa2a2a2); // 选中后显示值边框颜色（灰蓝色）
   Color selectFillColor = const Color(0xfff1f1f1); // 选中后显示值背景的填充颜色（深蓝色）
@@ -40,8 +40,8 @@ class ChartColors {
 
   Color infoWindowNormalColor = const Color(0xff000000); // 信息窗口正常颜色（白色）
   Color infoWindowTitleColor = const Color(0xff000000); // 信息窗口标题颜色（白色）
-  Color infoWindowUpColor = const Color(0xff5d9f80); // 信息窗口上涨颜色（绿色）
-  Color infoWindowDnColor = const Color(0xffea877b); // 信息窗口下跌颜色（红色）
+  Color infoWindowUpColor = const Color(0xff15A479); // 信息窗口上涨颜色（绿色）
+  Color infoWindowDnColor = const Color(0xffEB5F54); // 信息窗口下跌颜色（红色）
 
   Color hCrossColor = const Color(0xff000000); // 水平十字线颜色（白色）
   Color vCrossColor = const Color(0x1e676767); // 垂直十字线颜色（半透明白色）

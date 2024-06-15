@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:k_chart/chart_translations.dart';
-import 'package:k_chart/extension/map_ext.dart';
+// import 'package:k_chart/extension/map_ext.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 
 enum MainState { MA, BOLL, NONE }
@@ -11,7 +12,9 @@ enum SecondaryState { MACD, KDJ, RSI, WR, CCI, NONE }
 
 class TimeFormat {
   static const List<String> YEAR_MONTH_DAY = [yyyy, '-', mm, '-', dd];
-  static const List<String> YEAR_MONTH_DAY_WITH_HOUR = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn];
+  // static const List<String> YEAR_MONTH_DAY_WITH_HOUR = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn];
+  static const List<String> YEAR_MONTH_DAY_WITH_HOUR = [mm, '-', dd, ' ', HH, ':', nn];
+
 }
 
 class KChartWidget extends StatefulWidget {
@@ -177,7 +180,8 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
             if (widget.isTrendLine && !isLongPress && enableCordRecord) {
               enableCordRecord = false;
               Offset p1 = Offset(getTrendLineX(), mSelectY);
-              if (!waitingForOtherPairofCords) lines.add(TrendLine(p1, const Offset(-1, -1), trendLineMax!, trendLineScale!));
+              if (!waitingForOtherPairofCords)
+                lines.add(TrendLine(p1, const Offset(-1, -1), trendLineMax!, trendLineScale!));
 
               if (waitingForOtherPairofCords) {
                 var a = lines.last;
@@ -329,54 +333,66 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
 
   // 信息框
   Widget _buildInfoDialog() {
-    return StreamBuilder<InfoWindowEntity?>(
-        stream: mInfoWindowStream?.stream,
-        builder: (context, snapshot) {
-          if ((!isLongPress && !isOnTap) ||
-              widget.isLine == true ||
-              !snapshot.hasData ||
-              snapshot.data?.kLineEntity == null) return Container();
-          KLineEntity entity = snapshot.data!.kLineEntity;
-          double upDown = entity.change ?? entity.close - entity.open;
-          double upDownPercent = entity.ratio ?? (upDown / entity.open) * 100;
-          final double? entityAmount = entity.amount;
-          infos = [
-            getDate(entity.time),
-            entity.open.toStringAsFixed(widget.fixedLength),
-            entity.high.toStringAsFixed(widget.fixedLength),
-            entity.low.toStringAsFixed(widget.fixedLength),
-            entity.close.toStringAsFixed(widget.fixedLength),
-            "${upDown > 0 ? "+" : ""}${upDown.toStringAsFixed(widget.fixedLength)}",
-            "${upDownPercent > 0 ? "+" : ''}${upDownPercent.toStringAsFixed(2)}%",
-            if (entityAmount != null) entityAmount.toInt().toString()
-          ];
-          const dialogPadding = 4.0;
-          final dialogWidth = mWidth / 3;
-          return Container(
-            margin: EdgeInsets.only(
-              left: snapshot.data!.isLeft ? dialogPadding : mWidth - dialogWidth - dialogPadding,
-              top: 25,
-            ),
-            width: dialogWidth,
-            decoration: BoxDecoration(
-                color: widget.chartColors.selectFillColor,
-                border: Border.all(color: widget.chartColors.selectBorderColor, width: 0.5)),
-            child: ListView.builder(
-              padding: const EdgeInsets.all(dialogPadding),
-              itemCount: infos.length,
-              itemExtent: 14.0,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final translations = widget.isChinese ? kChartTranslations['zh_CN']! : widget.translations.of(context);
+    return OrientationBuilder(builder: (context, orientation) {
+      return StreamBuilder<InfoWindowEntity?>(
+          stream: mInfoWindowStream?.stream,
+          builder: (context, snapshot) {
+            if ((!isLongPress && !isOnTap) ||
+                widget.isLine == true ||
+                !snapshot.hasData ||
+                snapshot.data?.kLineEntity == null) return Container();
+            KLineEntity entity = snapshot.data!.kLineEntity;
+            double upDown = entity.change ?? entity.close - entity.open;
+            double upDownPercent = entity.ratio ?? (upDown / entity.open) * 100;
+            final double? entityAmount = entity.amount;
+            // debugPrint('🐞 entity.time ${entity.time}');
+            infos = [
+              getDate(entity.time),
+              entity.open.toStringAsFixed(widget.fixedLength),
+              entity.high.toStringAsFixed(widget.fixedLength),
+              entity.low.toStringAsFixed(widget.fixedLength),
+              entity.close.toStringAsFixed(widget.fixedLength),
+              "${upDown > 0 ? "+" : ""}${upDown.toStringAsFixed(widget.fixedLength)}",
+              "${upDownPercent > 0 ? "+" : ''}${upDownPercent.toStringAsFixed(2)}%",
+              entity.vol.toStringAsFixed(widget.fixedLength),
+              if (entityAmount != null) entityAmount.toInt().toString()
+            ];
+            double dialogPadding = 4.0;
+            // final dialogWidth = mWidth / 3;
+            // 固定弹出框宽度
+            const dialogWidth = 130.0;
 
-                return _buildItem(
-                  infos[index],
-                  translations.byIndex(index),
-                );
-              },
-            ),
-          );
-        });
+            double safeArea = context.mediaQuery.padding.left + 5;
+            return Container(
+              margin: EdgeInsets.only(
+                left: snapshot.data!.isLeft
+                    ? (orientation == Orientation.landscape ? safeArea : dialogPadding)
+                    : mWidth - dialogWidth - dialogPadding,
+                top: 25,
+              ),
+              width: dialogWidth,
+              decoration: BoxDecoration(
+                  color: widget.chartColors.selectFillColor.withOpacity(0.8),
+                  border: Border.all(color: widget.chartColors.selectBorderColor, width: 0.5)),
+              child: ListView.builder(
+                padding: EdgeInsets.all(dialogPadding),
+                itemCount: infos.length,
+                itemExtent: 14.0,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  // final translations =
+                  //     widget.isChinese ? kChartTranslations['zh_CN']! : widget.translations.of(context);
+                  final translations =kChartTranslations['zh_CN']!;
+
+                  return _buildItem(
+                    infos[index],
+                    translations.byIndex(index),
+                  );
+                },
+              ),
+            );
+          });
+    });
   }
 
   // 信息框
@@ -394,10 +410,10 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
         Expanded(
           child: Text(
             infoName,
-            style: TextStyle(color: widget.chartColors.infoWindowTitleColor, fontSize: 10.0),
+            style: TextStyle(color: widget.chartColors.infoWindowTitleColor, fontSize: 10.0,fontWeight: FontWeight.w400),
           ),
         ),
-        Text(info, style: TextStyle(color: color, fontSize: 10.0)),
+        Text(info, style: TextStyle(color: color, fontSize: 10.0,fontWeight: FontWeight.w400)),
       ],
     );
     return widget.materialInfoDialog ? Material(color: Colors.transparent, child: infoWidget) : infoWidget;

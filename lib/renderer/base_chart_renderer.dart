@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/util/base_util.dart';
 
-import '../utils/base_util.dart';
 export '../chart_style.dart';
 
 abstract class BaseChartRenderer<T> {

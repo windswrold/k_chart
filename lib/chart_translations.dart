@@ -7,6 +7,7 @@ class ChartTranslations {
   final String changeAmount;
   final String change;
   final String amount;
+  final String vol;
 
   const ChartTranslations({
     this.date = 'Date',
@@ -17,6 +18,7 @@ class ChartTranslations {
     this.changeAmount = 'Change',
     this.change = 'Change%',
     this.amount = 'Amount',
+    this.vol = 'Vol',
   });
 
   String byIndex(int index) {
@@ -36,7 +38,7 @@ class ChartTranslations {
       case 6:
         return change;
       case 7:
-        return amount;
+        return vol;
     }
 
     throw UnimplementedError();
@@ -53,5 +55,6 @@ const kChartTranslations = {
     changeAmount: '涨跌额',
     change: '涨跌幅',
     amount: '成交额',
+    vol: '成交量',
   ),
 };
